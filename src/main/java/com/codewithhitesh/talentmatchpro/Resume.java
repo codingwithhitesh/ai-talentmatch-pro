@@ -10,6 +10,7 @@ public class Resume {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long resumeId;
 
+
     //ENUMS
     public enum Industry {
         MANUFACTURING, SOFTWARE, FINANCE, MEDICAL
@@ -33,16 +34,28 @@ public class Resume {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    private String extractedText;
+
+
     protected Resume() {
     }
 
-    public Resume(String candidateName, String fileName, String rawTextContent, Industry industry, Role role, int experience) {
-        this.candidateName = candidateName;
-        this.fileName = fileName;
-        this.rawTextContent = rawTextContent;
-        this.industry = industry;
+    public String getExtractedText() {
+        return extractedText;
+    }
+
+    public void setExtractedText(String extractedText) {
+        this.extractedText = extractedText;
+    }
+
+    public Resume(String extractedText, Role role, int experience, Industry industry, String rawTextContent, String fileName, String candidateName) {
+        this.extractedText = extractedText;
         this.role = role;
         this.experience = experience;
+        this.industry = industry;
+        this.rawTextContent = rawTextContent;
+        this.fileName = fileName;
+        this.candidateName = candidateName;
     }
 
     public Long getResumeId() {
@@ -100,4 +113,6 @@ public class Resume {
     public void setRole(Role role) {
         this.role = role;
     }
+
+
 }
