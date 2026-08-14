@@ -35,7 +35,7 @@ public class JobService {
         if (!jobRepository.existsById(id)) {
             throw new RuntimeException("Job" + id + " does not exist");
         }
-        jobRepository.delete(id);
+        jobRepository.deleteById(id);
     }
 
     public List<Job> getAllJobs() {

@@ -34,6 +34,7 @@ public class Resume {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Column(columnDefinition = "TEXT")
     private String extractedText;
 
 

@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RestController
+@RequestMapping("/api/jobs")
 public class JobController {
 
     private final JobService jobService;
@@ -21,6 +23,7 @@ public class JobController {
     }
     @GetMapping
     public ResponseEntity<List<Job>> getAllJobs() {
+
         return ResponseEntity.ok(jobService.getAllJobs());
     }
 

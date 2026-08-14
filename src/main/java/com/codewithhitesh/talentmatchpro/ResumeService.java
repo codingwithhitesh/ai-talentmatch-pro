@@ -2,9 +2,12 @@ package com.codewithhitesh.talentmatchpro;
 
 import org.apache.james.mime4j.dom.Multipart;
 import org.apache.tika.exception.TikaException;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+
+@Service
 
 public class ResumeService {
 

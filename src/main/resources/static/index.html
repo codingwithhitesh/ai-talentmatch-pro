@@ -1,0 +1,79 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TalentMatchPro</title>
+
+    <!-- Auto-redirect from IntelliJ port 63342 directly to Spring Boot on port 8080 -->
+    <script>
+        if (window.location.port === "63342") {
+            window.location.href = "http://localhost:8080/index.html";
+        }
+    </script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+    <div>
+        <h1>TalentMatchPro</h1>
+        <p>Simple AI Resume Matcher Demo</p>
+    </div>
+</header>
+
+<main>
+    <section class="card">
+        <h2>1. Upload Resume</h2>
+        <form id="resumeForm">
+            <input id="candidateName" placeholder="Candidate name" required>
+            <input id="resumeFile" type="file" accept=".pdf,.doc,.docx,.txt" required>
+            <button>Upload Resume</button>
+        </form>
+        <p id="resumeStatus"></p>
+    </section>
+
+    <section class="card">
+        <h2>2. Create Job</h2>
+        <form id="jobForm">
+            <input id="title" placeholder="Job title" required>
+            <input id="companyName" placeholder="Company name" required>
+            <textarea id="description" placeholder="Job description / required skills" required></textarea>
+
+            <select id="industry">
+                <option value="SOFTWARE">SOFTWARE</option>
+                <option value="MANUFACTURING">MANUFACTURING</option>
+                <option value="FINANCE">FINANCE</option>
+                <option value="MEDICAL">MEDICAL</option>
+            </select>
+
+            <select id="role">
+                <option value="FRESHER">FRESHER</option>
+                <option value="JUNIOR">JUNIOR</option>
+                <option value="EXECUTIVE">EXECUTIVE</option>
+                <option value="MANAGER">MANAGER</option>
+                <option value="MANAGEMENT">MANAGEMENT</option>
+            </select>
+
+            <input id="experience" type="number" min="0" placeholder="Required experience (years)" required>
+            <button>Create Job</button>
+        </form>
+        <p id="jobStatus"></p>
+    </section>
+
+    <section class="card">
+        <h2>3. AI Match</h2>
+        <div class="row">
+            <input id="resumeId" type="number" placeholder="Resume ID">
+            <input id="jobId" type="number" placeholder="Job ID">
+        </div>
+        <button id="matchBtn" class="primary">Analyze Resume</button>
+        <pre id="result"></pre>
+    </section>
+</main>
+
+<footer>Backend-first project • UI only for demonstration</footer>
+<script src="script.js"></script>
+</body>
+</html>
