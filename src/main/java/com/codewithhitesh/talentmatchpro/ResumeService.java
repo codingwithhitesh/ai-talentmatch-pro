@@ -1,11 +1,11 @@
 package com.codewithhitesh.talentmatchpro;
 
-import org.apache.james.mime4j.dom.Multipart;
 import org.apache.tika.exception.TikaException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @Service
 
@@ -35,5 +35,13 @@ public class ResumeService {
         return resumeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Resume not found with id: " + id));
     }
+
+    /* * NEW:
+    * Get every resume stored in the database
+    * Used by the candidate-ranking feature. */
+
+
+    public List<Resume> getAllResumes() {
+        return resumeRepository.findAll(); }
 
 }

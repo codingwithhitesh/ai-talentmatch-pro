@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/resumes")
@@ -31,4 +32,12 @@ public class ResumeController {
     public ResponseEntity<Resume> getResumeById(@PathVariable Long id) {
         return ResponseEntity.ok(resumeService.getResumeById(id));
     }
+
+
+    /*   UPDATE 2.0
+    * * NEW: * Get all resumes. *
+    * * GET /api/resumes */
+    @GetMapping
+    public ResponseEntity<List<Resume>> getAllResumes() {
+        return ResponseEntity.ok( resumeService.getAllResumes() ); }
 }

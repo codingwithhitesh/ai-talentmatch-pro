@@ -1,79 +1,378 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TalentMatchPro</title>
-
-    <!-- Auto-redirect from IntelliJ port 63342 directly to Spring Boot on port 8080 -->
-    <script>
-        if (window.location.port === "63342") {
-            window.location.href = "http://localhost:8080/index.html";
-        }
-    </script>
-
+    <title>TalentMatchPro | AI Resume Matcher</title>
     <link rel="stylesheet" href="style.css">
+
+    <!-- Only UI additions -->
+    <style>
+        .brand{
+            display:flex;
+            align-items:center;
+            gap:14px;
+        }
+
+        .brand h2{
+            margin:0;
+            font-size:24px;
+            color:#fff;
+            font-weight:700;
+        }
+
+        .brand p{
+            margin:2px 0 0;
+            color:#dbeafe;
+            font-size:13px;
+        }
+
+        .logo{
+            width:72px;
+            height:72px;
+            flex-shrink:0;
+        }
+
+        .credit-side{
+            position:fixed;
+            right:10px;
+            top:50%;
+            transform:translateY(-50%) rotate(180deg);
+            writing-mode:vertical-rl;
+            font-size:13px;
+            color:#64748b;
+            letter-spacing:0.5px;
+            user-select:none;
+            z-index:999;
+        }
+
+        footer{
+            text-align:center;
+            line-height:1.8;
+        }
+
+        .copyright{
+            font-size:13px;
+            color:#94a3b8;
+        }
+
+        @media(max-width:768px){
+            .credit-side{
+                display:none;
+            }
+            .brand h2{
+                font-size:20px;
+            }
+            .logo{
+                width:58px;
+                height:58px;
+            }
+        }
+    </style>
 </head>
+
 <body>
-<header>
-    <div>
-        <h1>TalentMatchPro</h1>
-        <p>Simple AI Resume Matcher Demo</p>
+
+<!-- Right Side Credit -->
+<div class="credit-side">
+    © 2026 • This application is created by Hitesh S. All Rights Reserved.
+</div>
+
+<header class="hero">
+    <div class="hero-inner">
+
+        <!-- LEFT : Logo + Company -->
+        <div class="brand">
+
+            <!-- Inline SVG Logo -->
+            <svg class="logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+
+                <defs>
+                    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="#1EA7FF"/>
+                        <stop offset="100%" stop-color="#2563EB"/>
+                    </linearGradient>
+                </defs>
+
+                <!-- C -->
+                <path d="M50 12
+                         A38 38 0 1 0 50 88
+                         L58 78
+                         A26 26 0 1 1 58 22 Z"
+                      fill="url(#g)"/>
+
+                <!-- H -->
+                <path d="M58 18 H68 V42 H82 V18 H92 V82 H82 V52 H68 V82 H58 Z"
+                      fill="white"/>
+
+                <!-- code -->
+                <text x="31" y="56"
+                      font-size="16"
+                      fill="white"
+                      font-family="Arial"
+                      font-weight="bold">&lt;/&gt;</text>
+            </svg>
+
+            <div>
+                <div class="eyebrow">AI RECRUITMENT ASSISTANT</div>
+                <h2>
+                    <span style="color:#ff3b3b;">CodeWith</span><span style="color:#1EA7FF;">Hitesh</span>
+                </h2>
+                <p>TalentMatchPro • AI Resume Matching Platform</p>
+            </div>
+        </div>
+
+        <div class="tech-badge">
+            Spring Boot • Spring AI • Ollama • Apache Tika
+        </div>
+
     </div>
 </header>
 
 <main>
+
+    <div id="globalStatus" class="status info">
+        Ready. Create a job and upload resumes to start matching.
+    </div>
+
+    <!-- 1. Upload Resume -->
     <section class="card">
-        <h2>1. Upload Resume</h2>
-        <form id="resumeForm">
-            <input id="candidateName" placeholder="Candidate name" required>
-            <input id="resumeFile" type="file" accept=".pdf,.doc,.docx,.txt" required>
-            <button>Upload Resume</button>
-        </form>
-        <p id="resumeStatus"></p>
-    </section>
-
-    <section class="card">
-        <h2>2. Create Job</h2>
-        <form id="jobForm">
-            <input id="title" placeholder="Job title" required>
-            <input id="companyName" placeholder="Company name" required>
-            <textarea id="description" placeholder="Job description / required skills" required></textarea>
-
-            <select id="industry">
-                <option value="SOFTWARE">SOFTWARE</option>
-                <option value="MANUFACTURING">MANUFACTURING</option>
-                <option value="FINANCE">FINANCE</option>
-                <option value="MEDICAL">MEDICAL</option>
-            </select>
-
-            <select id="role">
-                <option value="FRESHER">FRESHER</option>
-                <option value="JUNIOR">JUNIOR</option>
-                <option value="EXECUTIVE">EXECUTIVE</option>
-                <option value="MANAGER">MANAGER</option>
-                <option value="MANAGEMENT">MANAGEMENT</option>
-            </select>
-
-            <input id="experience" type="number" min="0" placeholder="Required experience (years)" required>
-            <button>Create Job</button>
-        </form>
-        <p id="jobStatus"></p>
-    </section>
-
-    <section class="card">
-        <h2>3. AI Match</h2>
-        <div class="row">
-            <input id="resumeId" type="number" placeholder="Resume ID">
-            <input id="jobId" type="number" placeholder="Job ID">
+        <div class="section-title">
+            <span class="step">1</span>
+            <div>
+                <h2>Upload Resume</h2>
+                <p class="muted">Add a candidate resume to the database.</p>
+            </div>
         </div>
-        <button id="matchBtn" class="primary">Analyze Resume</button>
-        <pre id="result"></pre>
+
+        <form id="resumeForm">
+            <label for="candidateName">Candidate name</label>
+            <input id="candidateName" type="text"
+                   placeholder="e.g. Hitesh Sharma" required>
+
+            <label for="resumeFile">Resume file</label>
+            <input id="resumeFile" type="file"
+                   accept=".pdf,.doc,.docx,.txt" required>
+
+            <p class="hint">Supported: PDF, DOC, DOCX and TXT</p>
+
+            <button id="uploadResumeBtn"
+                    type="submit"
+                    class="primary">
+                Upload Resume
+            </button>
+        </form>
+
+        <div id="resumeStatus" class="status hidden"></div>
     </section>
+
+    <!-- 2. Create Job -->
+    <section class="card">
+        <div class="section-title">
+            <span class="step">2</span>
+            <div>
+                <h2>Create Job</h2>
+                <p class="muted">
+                    Create the job description that AI will use for matching.
+                </p>
+            </div>
+        </div>
+
+        <form id="jobForm">
+
+            <div class="two-column">
+                <div>
+                    <label for="title">Job title</label>
+                    <input id="title" type="text"
+                           placeholder="Java Backend Developer" required>
+                </div>
+
+                <div>
+                    <label for="companyName">Company name</label>
+                    <input id="companyName" type="text"
+                           placeholder="ABC Technologies" required>
+                </div>
+            </div>
+
+            <label for="description">Job description / required skills</label>
+
+            <textarea id="description"
+                      placeholder="Java, Spring Boot, REST API, JPA, Hibernate, SQL..."
+                      required></textarea>
+
+            <div class="three-column">
+
+                <div>
+                    <label for="industry">Industry</label>
+                    <select id="industry">
+                        <option value="SOFTWARE">Software</option>
+                        <option value="MANUFACTURING">Manufacturing</option>
+                        <option value="FINANCE">Finance</option>
+                        <option value="MEDICAL">Medical</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="role">Role level</label>
+                    <select id="role">
+                        <option value="FRESHER">Fresher</option>
+                        <option value="JUNIOR">Junior</option>
+                        <option value="EXECUTIVE">Executive</option>
+                        <option value="MANAGER">Manager</option>
+                        <option value="MANAGEMENT">Management</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="experience">Experience (years)</label>
+                    <input id="experience" type="number"
+                           min="0" value="0" required>
+                </div>
+            </div>
+
+            <button id="createJobBtn"
+                    type="submit"
+                    class="primary">
+                Create Job
+            </button>
+        </form>
+
+        <div id="jobStatus" class="status hidden"></div>
+    </section>
+
+    <!-- 3. Resume database -->
+    <section class="card">
+        <div class="section-header">
+            <div class="section-title compact">
+                <span class="step">3</span>
+                <div>
+                    <h2>Resume Database</h2>
+                    <p class="muted">Candidates currently stored in H2.</p>
+                </div>
+            </div>
+
+            <button id="refreshResumesBtn"
+                    type="button"
+                    class="secondary">
+                Refresh
+            </button>
+        </div>
+
+        <div id="resumeList" class="list-area">
+            Loading resumes...
+        </div>
+    </section>
+
+    <!-- 4. Job database -->
+    <section class="card">
+        <div class="section-header">
+            <div class="section-title compact">
+                <span class="step">4</span>
+                <div>
+                    <h2>Job Database</h2>
+                    <p class="muted">Jobs currently stored in H2.</p>
+                </div>
+            </div>
+
+            <button id="refreshJobsBtn"
+                    type="button"
+                    class="secondary">
+                Refresh
+            </button>
+        </div>
+
+        <div id="jobList" class="list-area">
+            Loading jobs...
+        </div>
+    </section>
+
+    <!-- 5. Individual AI Match -->
+    <section class="card highlight-card">
+        <div class="section-title">
+            <span class="step ai">5</span>
+            <div>
+                <h2>Individual Resume Match</h2>
+                <p class="muted">
+                    Compare one candidate with one job using AI.
+                </p>
+            </div>
+        </div>
+
+        <div class="two-column">
+            <div>
+                <label for="individualResumeSelect">Resume</label>
+                <select id="individualResumeSelect">
+                    <option value="">Select Resume</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="individualJobSelect">Job</label>
+                <select id="individualJobSelect">
+                    <option value="">Select Job</option>
+                </select>
+            </div>
+        </div>
+
+        <button id="matchBtn"
+                type="button"
+                class="primary">
+            Analyze Resume with AI
+        </button>
+
+        <pre id="result" class="ai-result">
+Your AI analysis will appear here.
+        </pre>
+    </section>
+
+    <!-- 6. Candidate Ranking -->
+    <section class="card highlight-card">
+        <div class="section-title">
+            <span class="step ai">6</span>
+            <div>
+                <h2>Find Best Candidates</h2>
+                <p class="muted">
+                    Let AI evaluate and rank every stored resume for a selected job.
+                </p>
+            </div>
+        </div>
+
+        <label for="rankingJobSelect">Job to rank candidates for</label>
+
+        <select id="rankingJobSelect">
+            <option value="">Select Job</option>
+        </select>
+
+        <button id="rankBtn"
+                type="button"
+                class="primary">
+            Find Best Candidates
+        </button>
+
+        <div id="rankingStatus" class="status hidden"></div>
+        <div id="rankingResults"></div>
+    </section>
+
 </main>
 
-<footer>Backend-first project • UI only for demonstration</footer>
+<footer>
+
+    <div>
+        <strong style="color:#ff3b3b;">CodeWith</strong><strong style="color:#1EA7FF;">Hitesh</strong>
+        • Spring Boot • Spring AI • Ollama • Apache Tika
+    </div>
+
+    <div class="copyright">
+        © 2026 Hitesh S. All Rights Reserved.
+    </div>
+
+    <div class="copyright">
+        “Code is not just written, it is crafted.”
+    </div>
+
+</footer>
+
 <script src="script.js"></script>
+
 </body>
 </html>

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 @Service
 public class FileStorageService {
@@ -26,6 +27,31 @@ public class FileStorageService {
 
         if (extractedText == null || extractedText.trim().isEmpty()) {
             throw new IllegalArgumentException("Could not extract any text from the provided file.");
+        }
+
+        return extractedText.trim();
+    }
+
+    public String extractTextFromInputStream(
+            InputStream inputStream,
+            String fileName)
+            throws IOException, TikaException {
+
+        if (inputStream == null) {
+            throw new IllegalArgumentException(
+                    "Input stream is null."
+            );
+        }
+
+        String extractedText =
+                tika.parseToString(inputStream);
+
+        if (extractedText == null ||
+                extractedText.trim().isEmpty()) {
+
+            throw new IllegalArgumentException(
+                    "Could not extract text from: " + fileName
+            );
         }
 
         return extractedText.trim();
