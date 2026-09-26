@@ -1,4 +1,3 @@
-```javascript
 // TalentMatchPro frontend
 
 // ============================================================
@@ -594,4 +593,3 @@ function renderSkills(skills, className, emptyText) {
         .map(skill => `<span class="skill ${className}">${escapeHtml(skill)}</span>`)
         .join("");
 }
-```
