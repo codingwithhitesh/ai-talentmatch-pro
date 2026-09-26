@@ -1,9 +1,23 @@
+```javascript
 // TalentMatchPro frontend
 
-// Always send API requests to the Spring Boot backend.
-// This prevents 404 errors when the HTML is accidentally opened
-// through VS Code/IntelliJ Live Server instead of Spring Boot.
-const API_BASE = "http://localhost:8080";
+// ============================================================
+// API BASE URL
+// ============================================================
+// IMPORTANT:
+// Leave this empty.
+// The frontend and Spring Boot backend are deployed together,
+// so the browser will automatically use the current domain.
+//
+// Local:
+// http://localhost:8080/api/...
+//
+// Render:
+// https://ai-talentmatch-pro.onrender.com/api/...
+//
+// This avoids hard-coded localhost URLs in production.
+const API_BASE = "";
+
 // This file intentionally contains plain JavaScript only.
 // No external JavaScript library is required.
 
@@ -444,7 +458,7 @@ matchBtn.addEventListener("click", async () => {
     } catch (error) {
         console.error("Matching error:", error);
         result.textContent = `Matching failed: ${error.message}`;
-        setStatus(globalStatus, "Individual AI matching failed. Make sure Ollama is running.", "error");
+        setStatus(globalStatus, "Individual AI matching failed. Check your Groq configuration.", "error");
     } finally {
         setButtonLoading(matchBtn, false, "Analyze Resume with AI");
     }
@@ -469,6 +483,7 @@ rankBtn.addEventListener("click", async () => {
         "AI is analyzing all resumes. This may take some time...",
         "info"
     );
+
     rankingResults.innerHTML = "";
     setButtonLoading(rankBtn, true, "Find Best Candidates");
 
@@ -495,7 +510,7 @@ rankBtn.addEventListener("click", async () => {
     } catch (error) {
         console.error("Ranking error:", error);
         setStatus(rankingStatus, `Ranking failed: ${error.message}`, "error");
-        setStatus(globalStatus, "Ranking failed. Make sure Ollama and llama3.2 are running.", "error");
+        setStatus(globalStatus, "Ranking failed. Check your Groq configuration.", "error");
     } finally {
         setButtonLoading(rankBtn, false, "Find Best Candidates");
     }
@@ -519,8 +534,13 @@ function displayRankingResults(candidates) {
         const score = Number(candidate.score) || 0;
         const scoreClass = score >= 75 ? "high" : score >= 50 ? "medium" : "low";
 
-        const matchedSkills = Array.isArray(candidate.matchedSkills) ? candidate.matchedSkills : [];
-        const missingSkills = Array.isArray(candidate.missingSkills) ? candidate.missingSkills : [];
+        const matchedSkills = Array.isArray(candidate.matchedSkills)
+            ? candidate.matchedSkills
+            : [];
+
+        const missingSkills = Array.isArray(candidate.missingSkills)
+            ? candidate.missingSkills
+            : [];
 
         const card = document.createElement("div");
         card.className = "candidate-card";
@@ -555,7 +575,9 @@ function displayRankingResults(candidates) {
 
             <div class="analysis-section">
                 <strong>AI explanation</strong>
-                <div class="item-meta">${escapeHtml(candidate.explanation || "No explanation returned by AI.")}</div>
+                <div class="item-meta">
+                    ${escapeHtml(candidate.explanation || "No explanation returned by AI.")}
+                </div>
             </div>
         `;
 
@@ -572,3 +594,4 @@ function renderSkills(skills, className, emptyText) {
         .map(skill => `<span class="skill ${className}">${escapeHtml(skill)}</span>`)
         .join("");
 }
+```
